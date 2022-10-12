@@ -65,3 +65,80 @@ int insertByIndex(List *list, size_t index, int value)
 }
 
 
+bool testInsertById1()
+{
+    int errorCode = insertByIndex(NULL, 2, 1);
+    return errorCode == -1;
+}
+
+bool testInsertById2()
+{
+    List *list = calloc(1, sizeof(List));
+    int errorCode = insertByIndex(list, 2, 1);
+
+    ListElement *a = list->firstElement,
+                *b = NULL;
+    while (a != NULL)
+    {
+        b = a->nextElement;
+        free(a);
+        a = b;
+    }
+    free(list);
+
+    return errorCode == -3;
+}
+
+bool testInsertById3()
+{
+    bool testResult = true;
+
+    List *list = calloc(1, sizeof(List));
+    int errorCode1 = insertByIndex(list, 0, 4);
+    int errorCode2 = insertByIndex(list, 1, 7);
+    int errorCode3 = insertByIndex(list, 0, 12);
+    if (errorCode1 != 0 || errorCode2 != 0 || errorCode3 != 0)
+    {
+        ListElement *a = list->firstElement,
+                    *b = NULL;
+        while (a != NULL)
+        {
+            b = a->nextElement;
+            free(a);
+            a = b;
+        }
+        free(list);
+
+        return false;
+    }
+
+    ListElement *currentElement = list->firstElement;
+    if (currentElement->value != 12)
+    {
+        testResult = false;
+    }
+
+    currentElement = currentElement->nextElement;
+    if (currentElement->value != 4)
+    {
+        testResult = false;
+    }
+
+    currentElement = currentElement->nextElement;
+    if (currentElement->value != 7)
+    {
+        testResult = false;
+    }
+
+    ListElement *a = list->firstElement,
+                *b = NULL;
+    while (a->nextElement != NULL)
+    {
+        b = a->nextElement;
+        free(a);
+        a = b;
+    }
+    free(list);
+
+    return testResult;
+}
