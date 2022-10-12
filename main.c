@@ -142,3 +142,7 @@ bool testInsertById3()
 
     return testResult;
 }
+
+int main() {
+    printf("Results of tests insertion func: 1: %d, 2: %d, 3: %d", testInsertById1(), testInsertById2(), testInsertById3());
+}
